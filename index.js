@@ -14,13 +14,14 @@ if(!github.context.payload.issue && !/\/(?:issue|pull-request)s\/\d+$/.test(gith
 
 if(!ScheduledDate.isValid(core.getInput('dateFormat', true))) {
     core.setFailed('Invalid date pattern provided.');
+    return;
 }
 
 async function getIssue() {
     let { issue } = github.context.payload;
     if(!issue) {
         const issueNumber = /\/(?:issue|pull-request)s\/(\d+)$/.exec(github.context.payload.project_card?.content_url);
-        const { data: result } = await octokit.issues.get({
+        const { data: result } = await octokit.rest.issues.get({
             ...github.context.repo,
             issue_number: issueNumber[1],
         });
