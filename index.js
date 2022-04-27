@@ -35,8 +35,8 @@ async function doStuff() {
     const sections = issue.body.split('##');
     const content = {};
     for(const section of sections) {
-        const [ title, body ] = section.split('\n', 1);
-        content[title.trim()] = body.trim();
+        const [ title, ...body ] = section.split('\n');
+        content[title.trim()] = body.join("\n").trim();
     }
     if(content.hasOwnProperty(core.getInput('scheduledTitle'))) {
         const rawDate = content[core.getInput('scheduledTitle')];
