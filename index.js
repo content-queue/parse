@@ -35,7 +35,7 @@ async function doStuff() {
     const sections = issue.body.split('##');
     const content = {};
     for(const section of sections) {
-        const [ title, body ] = section.split('\n', 1);
+        const [ title, body ] = section.split('\n', 2);
         content[title.trim()] = body.trim();
     }
     if(content.hasOwnProperty(core.getInput('scheduledTitle'))) {
