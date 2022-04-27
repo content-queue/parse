@@ -49,4 +49,7 @@ async function doStuff() {
     core.setOutput('cardContent', JSON.stringify(content));
 }
 
-doStuff().catch((error) => core.setFailed(error.message));
+doStuff().catch((error) => {
+    console.error(error);
+    core.setFailed(error.message);
+});
