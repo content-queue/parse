@@ -12,7 +12,7 @@ if(!github.context.payload.issue && !/\/(?:issue|pull-request)s\/\d+$/.test(gith
     return;
 }
 
-if(!ScheduledDate.isValid(core.getInput('dateFormat', true))) {
+if(!ScheduledDate.isValid(core.getInput('dateFormat'), true)) {
     core.setFailed('Invalid date pattern provided.');
     return;
 }
