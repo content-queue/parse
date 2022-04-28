@@ -7,15 +7,40 @@ inputs:
   scheduledTitle:
     description: 'Title for scheduling date'
     default: 'Scheduled for'
+    required: false
   timezone:
     description: 'Timezone'
     default: 'Europe/Berlin'
+    required: false
   dateFormat:
     description: 'Date format'
     default: 'YYYY-MM-DD HH:mm'
+    required: false
+  contentDescriptionHeading:
+    description: 'Heading where the overall content description is stored'
+    default: 'Content Description'
+    required: false
+  retweetHeading:
+    description: 'Heading where an URL to retweet is stored'
+    default: 'Retweet'
+    required: false
+  replyToHeading:
+    description: 'Heading where an URL to a tweet to reply to is stored'
+    default: 'Reply to'
+    required: false
+  contentHeading:
+    description: 'Heading where the tweet content is stored'
+    default: 'Content'
+    required: false
+  failOnValidationError:
+    description: 'Whether to fail the parse action if validation errors are detected'
+    default: 'true'
+    required: false
 outputs:
   cardContent:
     description: 'Parsed post metadata'
+  validationErrors:
+    description: 'Validation errors encountered while parsing the content'
 runs:
   using: 'node16'
   main: 'index.js'
