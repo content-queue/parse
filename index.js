@@ -32,7 +32,7 @@ async function getIssue() {
 
 async function doStuff() {
     const issue = await getIssue();
-    const sections = issue.body.split('##');
+    const sections = issue.body.split('###');
     const content = {};
     for(const section of sections) {
         const [ title, ...body ] = section.split('\n');
