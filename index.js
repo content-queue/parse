@@ -1,6 +1,5 @@
 'use strict';
 
-const { validateContent } = require('./validators');
 const ScheduledDate = require('./scheduled-date');
 
 const core = require('@actions/core'),
@@ -22,7 +21,6 @@ const inputs = {
     contentDescriptionHeading: core.getInput('contentDescriptionHeading'),
     contentHeading: core.getInput('contentHeading'),
     dateFormat: core.getInput('dateFormat'),
-    failOnValidationError: core.getInput('failOnValidationError') === 'true',
     replyToHeading: core.getInput('replyToHeading'),
     retweetHeading: core.getInput('retweetHeading'),
     scheduledTitle: core.getInput('scheduledTitle'),
@@ -70,17 +68,6 @@ async function doStuff() {
         content.date = {
             timestamp: scheduledDate.getTime(),
         };
-    }
-
-    const failOnValidationError = inputs.failOnValidationError;
-    const validation = validateContent(content, inputs);
-    core.setOutput('validationErrors', JSON.stringify(validation.errors));
-
-    if (failOnValidationError && validation.errors.length > 0) {
-        const errorMessage = 'Content validations failed';
-        console.error(errorMessage, validation.errors);
-        core.setFailed(errorMessage);
-        return;
     }
 
     core.setOutput('cardContent', JSON.stringify(content));
