@@ -32,15 +32,9 @@ inputs:
     description: 'Heading where the tweet content is stored'
     default: 'Content'
     required: false
-  failOnValidationError:
-    description: 'Whether to fail the parse action if validation errors are detected'
-    default: 'true'
-    required: false
 outputs:
   cardContent:
     description: 'Parsed post metadata'
-  validationErrors:
-    description: 'Validation errors encountered while parsing the content'
 runs:
   using: 'node16'
   main: 'index.js'
