@@ -67,6 +67,7 @@ async function doStuff() {
         const scheduledDate = new ScheduledDate(content.scheduledDate, inputs.timezone, inputs.dateFormat);
         content.date = {
             timestamp: scheduledDate.getTime(),
+            valid: scheduledDate.valid,
         };
     }
 
