@@ -17,6 +17,28 @@ if(!ScheduledDate.isValid(core.getInput('dateFormat'), true)) {
     return;
 }
 
+const inputs = {
+    contentDescriptionHeading: core.getInput('contentDescriptionHeading'),
+    contentHeading: core.getInput('contentHeading'),
+    dateFormat: core.getInput('dateFormat'),
+    replyToHeading: core.getInput('replyToHeading'),
+    retweetHeading: core.getInput('retweetHeading'),
+    scheduledTitle: core.getInput('scheduledTitle'),
+    timezone: core.getInput('timezone'),
+}
+
+function getPropertyFromHeadingMapping(heading) {
+    const mapping = {
+        [inputs.contentDescriptionHeading]: 'description',
+        [inputs.contentHeading]: 'content',
+        [inputs.replyToHeading]: 'replyTo',
+        [inputs.retweetHeading]: 'repost',
+        [inputs.scheduledTitle]: 'scheduledDate',
+    };
+
+    return mapping[heading] ?? heading;
+}
+
 async function getIssue() {
     let { issue } = github.context.payload;
     if(!issue) {
@@ -32,20 +54,23 @@ async function getIssue() {
 
 async function doStuff() {
     const issue = await getIssue();
-    const sections = issue.body.split('###');
+    const issueBody = issue.body || '';
+    const sections = issueBody.split('###');
     const content = {};
+
     for(const section of sections) {
         const [ title, ...body ] = section.split('\n');
-        content[title.trim()] = body.join("\n").trim();
+        const key = getPropertyFromHeadingMapping(title.trim());
+        content[key] = body.join("\n").trim();
     }
-    if(content.hasOwnProperty(core.getInput('scheduledTitle'))) {
-        const rawDate = content[core.getInput('scheduledTitle')];
-        const scheduledDate = new ScheduledDate(rawDate, core.getInput('timezone'), core.getInput('dateFormat'));
+    if(content.hasOwnProperty('scheduledDate')) {
+        const scheduledDate = new ScheduledDate(content.scheduledDate, inputs.timezone, inputs.dateFormat);
         content.date = {
             timestamp: scheduledDate.getTime(),
             valid: scheduledDate.valid,
         };
     }
+
     core.setOutput('cardContent', JSON.stringify(content));
 }
 
